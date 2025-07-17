@@ -1,7 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
+using System.Xml.Linq;
+using Test_Task_Datetime.Scheme;
 
 namespace Test_Task_Datetime.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class DateTimeController : Controller
     {
         private static List<DateOnly> _dateTime = new List<DateOnly>();
@@ -20,28 +27,32 @@ namespace Test_Task_Datetime.Controllers
             await file.CopyToAsync(fileStream);
         }
 
+        [HttpPut]
+        public void Put(int age, string name)
+        {
+            //DBQuery.InsertData(value, id);
+
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                Values d = new Values { date = DateTimeOffset.Parse("2009-05-07 08:17:25Z"), executiontime = 12, value = 0.3M };
+
+                db.Values.Add(d);
+                db.SaveChanges();
+
+                /*
+                var values = db.Values.ToList();
+                foreach (v u in values)
+                {
+                //...
+                }*/
+            }
+        }
+
         [HttpGet("{id}")]
         public string Get(int id)
         {
             _logger.LogDebug(id.ToString());
             return _dateTime[id].ToString();
-        }
-
-        [HttpPost("{value}")]
-        public void Post([FromBody] string value)        
-          => _dateTime.Add(DateOnly.FromDateTime(DateTime.Now).AddDays(_dateTime.Count));
-        
-
-        [HttpPut("{id}, {value}")]
-        public void Put(int id, [FromBody] string value)
-        {            
-            //...
-        }
-
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-            //...
         }
     }
 }
