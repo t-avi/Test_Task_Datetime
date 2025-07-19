@@ -1,5 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Test_Task_Datetime.Scheme;
 
@@ -8,6 +7,7 @@ namespace Test_Task_Datetime
     public class ApplicationContext : DbContext
     {
         public DbSet<Values> Values => Set<Values>();
+        public DbSet<FileNames> FileNames => Set<FileNames>();
         public ApplicationContext() => Database.EnsureCreated();
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -1,13 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Test_Task_Datetime.Scheme
 {
     public class Values
     {     
         [Key]       
-        public Guid id { get; set; }
-        public DateTimeOffset date { get; set; }
-        public int executiontime { get; set; }
-        public decimal value { get; set; }
+        public int ValueId { get; set; }
+        public DateTimeOffset Date { get; set; }
+        public int ExecutionTime { get; set; }
+        public decimal Value { get; set; }
+
+
+        public int FileNamesFileNameId { get; set; }
+        //public Filenames Filename { get; set; }
     }
 }
