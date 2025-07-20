@@ -21,6 +21,11 @@ namespace Test_Task_Datetime.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Upload file and add data to DB
+        /// </summary>
+        /// <param name="file">IFormFile object</param>
+        /// <returns>Returns nothing</returns>
         [HttpPost("UploadFile")]
         public async Task Upload(IFormFile file)
         {
@@ -29,10 +34,16 @@ namespace Test_Task_Datetime.Controllers
 
         }
 
+        /// <summary>
+        /// Applying several filters
+        /// </summary>
+        /// <param name="d_start">Use YYYY-MM-DDThh:mm:ssZ template</param>
+        /// <param name="d_end">Use YYYY-MM-DDThh:mm:ssZ template</param>
+        /// <returns>Returns IEnumerable result</returns>
         [HttpGet]
         [Route("GetByMultiplyFilters")]
         public IEnumerable<Scheme.Results> GetByMultiplyFilters(string? name, DateTime? d_start, DateTime? d_end, double? t_start, double? t_end, decimal? v_start, decimal? v_end)
-        {
+        {   
             using (ApplicationContext db = new ApplicationContext())
             {
                 db.Database.EnsureCreated();
@@ -47,6 +58,10 @@ namespace Test_Task_Datetime.Controllers
             }
         }
 
+        /// <summary>
+        /// Sotring the last 10 records from file by date 
+        /// </summary>
+        /// <returns>Returns IEnumerable result</returns>
         [HttpGet]
         [Route("GetLastTenValues")]
         public IEnumerable<Values> GetLastTenValues(string name)
