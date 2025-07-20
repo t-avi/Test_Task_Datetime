@@ -30,8 +30,26 @@ namespace Test_Task_Datetime.Controllers
         }
 
         [HttpGet]
-        [Route("GetByName")]
-        public IEnumerable<Scheme.Results> GetByName(string name)
+        [Route("GetByMultiplyFilters")]
+        public IEnumerable<Scheme.Results> GetByMultiplyFilters(string? name, DateTime? d_start, DateTime? d_end, double? t_start, double? t_end, decimal? v_start, decimal? v_end)
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                db.Database.EnsureCreated();
+                IQueryable<Scheme.Results> res = db.Results;
+
+                if (name is not null) res = res.Select(x => x).Where(x => x.FileNamesFileNameId == db.FileNames.First(a => a.Name == name).FileNameId);
+                if (d_start is not null && d_end is not null) res = res.Select(x => x).Where(x => x.MinDate > d_start && x.MinDate < d_end);
+                if (t_start is not null && t_end is not null) res = res.Select(x => x).Where(x => x.AverageExecutionTime > t_start && x.AverageExecutionTime < t_end);
+                if (v_start is not null && v_end is not null) res = res.Select(x => x).Where(x => x.AverageValue > v_start && x.AverageValue < v_end);
+
+                return res.ToArray();
+            }
+        }
+
+        [HttpGet]
+        [Route("GetLastTenValues")]
+        public IEnumerable<Values> GetLastTenValues(string name)
         {
             using (ApplicationContext db = new ApplicationContext())
             {
@@ -39,58 +57,15 @@ namespace Test_Task_Datetime.Controllers
 
                 int id = db.FileNames.First(a => a.Name == name).FileNameId; //try catch
 
-                return db.Results
-                    .Select(x=>x)
-                    .Where(x=>x.FileNamesFileNameId == id) //Reference Loop Exception
-                    .ToArray();    
-            }             
-        }
-
-        [HttpGet]
-        [Route("GetByMinDates")]        
-        public IEnumerable<Scheme.Results> GetByMinDates(DateTime start, DateTime end)
-        {
-            //'2017-07-21T17:32:28Z'
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                db.Database.EnsureCreated();
-
-                return db.Results
+                return db.Values
                     .Select(x => x)
-                    .Where(x => x.MinDate > start && x.MinDate < end)
+                    .Where(x => x.FileNamesFileNameId == id) //Reference Loop Exception
+                    .OrderBy(x => x.ValueId)
+                    .Take(10)
+                    .OrderBy (x => x.Date)
                     .ToArray();
             }
         }
-
-        [HttpGet]
-        [Route("GetByAvgTimes")]
-        public IEnumerable<Scheme.Results> GetByAvgTimes(double start, double end)
-        {
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                db.Database.EnsureCreated();
-
-                return db.Results
-                    .Select(x => x)
-                    .Where(x => x.AverageExecutionTime > start && x.AverageExecutionTime < end)
-                    .ToArray();
-            }
-        }
-
-        [HttpGet]
-        [Route("GetByAvgValues")]
-        public IEnumerable<Scheme.Results> GetByAvgValues(decimal start, decimal end)
-        {
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                db.Database.EnsureCreated();
-
-                return db.Results
-                    .Select(x => x)
-                    .Where(x => x.AverageValue > (decimal)start && x.AverageValue < (decimal)end)
-                    .ToArray();
-            }
-        }        
 
     }
 }
