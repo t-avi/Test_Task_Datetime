@@ -8,6 +8,7 @@ namespace Test_Task_Datetime
     {
         public DbSet<Values> Values => Set<Values>();
         public DbSet<FileNames> FileNames => Set<FileNames>();
+        public DbSet<Scheme.Results> Results => Set<Scheme.Results>();
         public ApplicationContext() => Database.EnsureCreated();
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

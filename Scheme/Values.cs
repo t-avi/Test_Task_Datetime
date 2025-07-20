@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Test_Task_Datetime.Scheme
 {
@@ -12,8 +11,7 @@ namespace Test_Task_Datetime.Scheme
         public int ExecutionTime { get; set; }
         public decimal Value { get; set; }
 
-
         public int FileNamesFileNameId { get; set; }
-        //public Filenames Filename { get; set; }
+        public FileNames Filename { get; set; }
     }
 }
