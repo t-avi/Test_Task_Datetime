@@ -84,8 +84,7 @@ namespace Test_Task_Datetime
 
                 using (ApplicationContext db = new ApplicationContext())
                 {
-                    db.Database.EnsureCreated();
-
+                    db.Database.EnsureCreated();                    
                     /*if new file with old name will have invalid data 
                          * then old valid data will be deleted because of one thread methods
                          * to solve this one shuold using async but i have no enough time*/
@@ -144,8 +143,8 @@ namespace Test_Task_Datetime
 
                         }
                     }
-
-                    var calcs = DataCalculation.MakeAllCalculations(db.Values);
+                                        
+                    var calcs = DataCalculation.MakeAllCalculations(db.Values, f);
                     Scheme.Results r = new Scheme.Results 
                     {
                         DeltaTime = calcs.DeltaTime,
