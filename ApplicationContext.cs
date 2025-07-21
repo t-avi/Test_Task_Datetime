@@ -16,7 +16,7 @@ namespace Test_Task_Datetime
             var port = "6432";
             var db = "datetimedb";
             var username = "postgres_admin";
-            var password = "okf4najL9dd?pa)#7BJh";
+            var password = "***";
             var connString = $"Host={host};Port={port};Database={db};Username={username};Password={password};Ssl Mode=VerifyFull;Root Certificate=C:/Users/Таня/.postgresql/root.crt";
 
             //AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true); //apply timestamps
